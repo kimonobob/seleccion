@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema de Cañas</title>
+  <title>Sistema de Selección</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 </head>
@@ -13,149 +13,247 @@
 
   <main class="container">
 
-    <!-- HEADER -->
-    <header class="header">
-      <div class="header-icon">♩</div>
-      <h1 class="title">Asignación<br/><span>de Cañas</span></h1>
-      <p class="subtitle">Sistema de registro musical</p>
-    </header>
+    <!-- ══════════════════════════════════
+         PANTALLA INICIO
+    ══════════════════════════════════ -->
+    <section id="pantallaInicio">
 
-    <!-- ── BÚSQUEDA ── -->
-    <section class="card card-search" id="seccionBusqueda">
-      <div class="step-label">Paso 01</div>
-      <h2 class="card-title">Buscar Músico</h2>
-      <p class="card-desc">Ingresa el código de 6 dígitos</p>
-      <div class="input-group">
-        <input
-          type="text"
-          id="inputCodigo"
-          class="input-codigo"
-          placeholder="000000"
-          maxlength="6"
-          inputmode="numeric"
-          autocomplete="off"
-        />
-        <button class="btn-buscar" onclick="buscarMusico()">
-          Buscar <span>→</span>
+      <header class="header">
+        <div class="header-icon">♩</div>
+        <h1 class="title">Sistema de<br/><span>Selección</span></h1>
+        <p class="subtitle">Elige una sección para continuar</p>
+      </header>
+
+      <div class="home-grid">
+
+        <button class="home-card home-chicas" onclick="irA('chicas')">
+          <div class="home-card-glow glow-pink"></div>
+          <span class="home-card-icon">♀</span>
+          <span class="home-card-title">Chicas</span>
+          <span class="home-card-desc">Selección de bailarinas</span>
+          <span class="home-card-arrow">→</span>
         </button>
+
+        <button class="home-card home-chicos" onclick="irA('chicos')">
+          <div class="home-card-glow glow-blue"></div>
+          <span class="home-card-icon">♂</span>
+          <span class="home-card-title">Chicos</span>
+          <span class="home-card-desc">Asignación de cañas</span>
+          <span class="home-card-arrow">→</span>
+        </button>
+
       </div>
-      <p class="error-msg" id="errorBusqueda"></p>
     </section>
 
-    <!-- ══════════════════════════════════════
-         ESTADO CELESTE — Sin registrar
-    ══════════════════════════════════════ -->
-    <section class="card card-cyan hidden" id="seccionSinRegistro">
+    <!-- ══════════════════════════════════
+         SECCIÓN CHICAS
+    ══════════════════════════════════ -->
+    <section id="pantallaChicas" class="hidden">
 
-      <div class="estado-pill cyan-pill">
-        <span class="pill-dot cyan-dot"></span>Sin asignación
+      <div class="seccion-header">
+        <button class="btn-back pink-back" onclick="volverInicio()">← Inicio</button>
+        <div class="seccion-badge pink-badge">♀ Chicas</div>
       </div>
 
-      <div class="musico-block">
-        <div class="musico-name cyan-name" id="cyanNombre">—</div>
-        <div class="musico-meta">
-          <span class="meta-chip cyan-chip">DNI: <strong id="cyanDNI">—</strong></span>
-          <span class="meta-chip cyan-chip">Ciclo: <strong id="cyanCiclo">—</strong></span>
+      <!-- Búsqueda -->
+      <div class="card card-search">
+        <div class="step-label pink-label">Búsqueda</div>
+        <h2 class="card-title">Buscar Estudiante</h2>
+        <p class="card-desc">Ingresa el código de 6 dígitos</p>
+        <div class="input-group">
+          <input
+            type="text"
+            id="inputCodigoChica"
+            class="input-codigo"
+            placeholder="000000"
+            maxlength="6"
+            inputmode="numeric"
+            autocomplete="off"
+          />
+          <button class="btn-buscar pink-buscar" onclick="buscarChica()">
+            Buscar <span>→</span>
+          </button>
         </div>
+        <p class="error-msg" id="errorChica"></p>
       </div>
 
-      <div class="divider cyan-divider"></div>
-
-      <p class="sel-label cyan-sel">¿Qué caña tocará?</p>
-      <div class="opciones-row">
-        <label class="op-card cyan-op">
-          <input type="radio" name="cana" value="1" onchange="actualizarSeleccion()"/>
-          <div class="op-inner">
-            <span class="op-num cyan-num">6</span>
-            <span class="op-txt">Seis</span>
+      <!-- Celeste: sin seleccionar -->
+      <div class="card card-cyan hidden" id="chicaSinSeleccion">
+        <div class="estado-pill cyan-pill">
+          <span class="pill-dot cyan-dot"></span>Sin seleccionar
+        </div>
+        <div class="musico-block">
+          <div class="musico-name cyan-name" id="chicaCyanNombre">—</div>
+          <div class="musico-meta">
+            <span class="meta-chip cyan-chip">DNI: <strong id="chicaCyanDNI">—</strong></span>
+            <span class="meta-chip cyan-chip">Ciclo: <strong id="chicaCyanCiclo">—</strong></span>
           </div>
-        </label>
-        <label class="op-card cyan-op">
-          <input type="radio" name="cana" value="2" onchange="actualizarSeleccion()"/>
-          <div class="op-inner">
-            <span class="op-num cyan-num">7</span>
-            <span class="op-txt">Siete</span>
-          </div>
-        </label>
+        </div>
+        <div class="divider cyan-divider"></div>
+        <button class="btn-seleccionar" onclick="seleccionarChica()">
+          Seleccionar ✓
+        </button>
+        <p class="error-msg" id="errorSeleccion"></p>
+        <button class="btn-volver" onclick="resetChicas()">← Buscar otra</button>
       </div>
 
-      <p class="sel-label cyan-sel">Tipo de caña</p>
-      <div class="opciones-row">
-        <label class="op-card cyan-op">
-          <input type="radio" name="tipoCana" value="Sanja" onchange="actualizarSeleccion()"/>
-          <div class="op-inner">
-            <span class="op-tipo-icon cyan-icon">◈</span>
-            <span class="op-txt">Sanja</span>
+      <!-- Verde: ya seleccionada -->
+      <div class="card card-green hidden" id="chicaSeleccionada">
+        <div class="estado-pill green-pill">
+          <span class="pill-dot green-dot"></span>Ya seleccionada
+        </div>
+        <div class="musico-block">
+          <div class="musico-name green-name" id="chicaGreenNombre">—</div>
+          <div class="musico-meta">
+            <span class="meta-chip green-chip">DNI: <strong id="chicaGreenDNI">—</strong></span>
+            <span class="meta-chip green-chip">Ciclo: <strong id="chicaGreenCiclo">—</strong></span>
           </div>
-        </label>
-        <label class="op-card cyan-op">
-          <input type="radio" name="tipoCana" value="Malta" onchange="actualizarSeleccion()"/>
-          <div class="op-inner">
-            <span class="op-tipo-icon cyan-icon">◈</span>
-            <span class="op-txt">Malta</span>
-          </div>
-        </label>
-        <label class="op-card cyan-op">
-          <input type="radio" name="tipoCana" value="Contra" onchange="actualizarSeleccion()"/>
-          <div class="op-inner">
-            <span class="op-tipo-icon cyan-icon">◈</span>
-            <span class="op-txt">Contra</span>
-          </div>
-        </label>
+        </div>
+        <div class="divider green-divider"></div>
+        <div class="seleccionada-display">
+          <div class="check-circle">✓</div>
+          <p class="seleccionada-txt">Confirmada como bailarina</p>
+        </div>
+        <button class="btn-volver green-volver" onclick="resetChicas()">← Buscar otra</button>
       </div>
 
-      <button class="btn-guardar hidden" id="btnGuardar" onclick="guardarDatos()">
-        Guardar Registro ✓
-      </button>
-      <p class="error-msg" id="errorGuardar"></p>
-      <button class="btn-volver" onclick="reiniciar()">← Buscar otro</button>
     </section>
 
-    <!-- ══════════════════════════════════════
-         ESTADO VERDE — Ya registrado
-    ══════════════════════════════════════ -->
-    <section class="card card-green hidden" id="seccionRegistrado">
+    <!-- ══════════════════════════════════
+         SECCIÓN CHICOS
+    ══════════════════════════════════ -->
+    <section id="pantallaChicos" class="hidden">
 
-      <div class="estado-pill green-pill">
-        <span class="pill-dot green-dot"></span>Ya registrado
+      <div class="seccion-header">
+        <button class="btn-back blue-back" onclick="volverInicio()">← Inicio</button>
+        <div class="seccion-badge blue-badge">♂ Chicos</div>
       </div>
 
-      <div class="musico-block">
-        <div class="musico-name green-name" id="greenNombre">—</div>
-        <div class="musico-meta">
-          <span class="meta-chip green-chip">DNI: <strong id="greenDNI">—</strong></span>
-          <span class="meta-chip green-chip">Ciclo: <strong id="greenCiclo">—</strong></span>
+      <!-- Búsqueda -->
+      <div class="card card-search">
+        <div class="step-label">Búsqueda</div>
+        <h2 class="card-title">Buscar Músico</h2>
+        <p class="card-desc">Ingresa el código de 6 dígitos</p>
+        <div class="input-group">
+          <input
+            type="text"
+            id="inputCodigo"
+            class="input-codigo"
+            placeholder="000000"
+            maxlength="6"
+            inputmode="numeric"
+            autocomplete="off"
+          />
+          <button class="btn-buscar" onclick="buscarMusico()">
+            Buscar <span>→</span>
+          </button>
         </div>
+        <p class="error-msg" id="errorBusqueda"></p>
       </div>
 
-      <div class="divider green-divider"></div>
+      <!-- Celeste: sin registrar -->
+      <div class="card card-cyan hidden" id="seccionSinRegistro">
+        <div class="estado-pill cyan-pill">
+          <span class="pill-dot cyan-dot"></span>Sin asignación
+        </div>
+        <div class="musico-block">
+          <div class="musico-name cyan-name" id="cyanNombre">—</div>
+          <div class="musico-meta">
+            <span class="meta-chip cyan-chip">DNI: <strong id="cyanDNI">—</strong></span>
+            <span class="meta-chip cyan-chip">Ciclo: <strong id="cyanCiclo">—</strong></span>
+          </div>
+        </div>
+        <div class="divider cyan-divider"></div>
 
-      <div class="asignacion-display">
-        <div class="asig-item">
-          <span class="asig-label">Caña asignada</span>
-          <span class="asig-valor green-valor" id="greenCana">—</span>
+        <p class="sel-label cyan-sel">¿Qué caña tocará?</p>
+        <div class="opciones-row">
+          <label class="op-card cyan-op">
+            <input type="radio" name="cana" value="1" onchange="actualizarSeleccion()"/>
+            <div class="op-inner">
+              <span class="op-num cyan-num">6</span>
+              <span class="op-txt">Seis</span>
+            </div>
+          </label>
+          <label class="op-card cyan-op">
+            <input type="radio" name="cana" value="2" onchange="actualizarSeleccion()"/>
+            <div class="op-inner">
+              <span class="op-num cyan-num">7</span>
+              <span class="op-txt">Siete</span>
+            </div>
+          </label>
         </div>
-        <div class="asig-sep">·</div>
-        <div class="asig-item">
-          <span class="asig-label">Tipo de caña</span>
-          <span class="asig-valor green-valor" id="greenTipo">—</span>
+
+        <p class="sel-label cyan-sel">Tipo de caña</p>
+        <div class="opciones-row">
+          <label class="op-card cyan-op">
+            <input type="radio" name="tipoCana" value="Sanja" onchange="actualizarSeleccion()"/>
+            <div class="op-inner">
+              <span class="op-tipo-icon cyan-icon">◈</span>
+              <span class="op-txt">Sanja</span>
+            </div>
+          </label>
+          <label class="op-card cyan-op">
+            <input type="radio" name="tipoCana" value="Malta" onchange="actualizarSeleccion()"/>
+            <div class="op-inner">
+              <span class="op-tipo-icon cyan-icon">◈</span>
+              <span class="op-txt">Malta</span>
+            </div>
+          </label>
+          <label class="op-card cyan-op">
+            <input type="radio" name="tipoCana" value="Contra" onchange="actualizarSeleccion()"/>
+            <div class="op-inner">
+              <span class="op-tipo-icon cyan-icon">◈</span>
+              <span class="op-txt">Contra</span>
+            </div>
+          </label>
         </div>
+
+        <button class="btn-guardar hidden" id="btnGuardar" onclick="guardarDatos()">
+          Guardar Registro ✓
+        </button>
+        <p class="error-msg" id="errorGuardar"></p>
+        <button class="btn-volver" onclick="resetChicos()">← Buscar otro</button>
       </div>
 
-      <div class="check-circle">✓</div>
+      <!-- Verde: ya registrado -->
+      <div class="card card-green hidden" id="seccionRegistrado">
+        <div class="estado-pill green-pill">
+          <span class="pill-dot green-dot"></span>Ya registrado
+        </div>
+        <div class="musico-block">
+          <div class="musico-name green-name" id="greenNombre">—</div>
+          <div class="musico-meta">
+            <span class="meta-chip green-chip">DNI: <strong id="greenDNI">—</strong></span>
+            <span class="meta-chip green-chip">Ciclo: <strong id="greenCiclo">—</strong></span>
+          </div>
+        </div>
+        <div class="divider green-divider"></div>
+        <div class="asignacion-display">
+          <div class="asig-item">
+            <span class="asig-label">Caña asignada</span>
+            <span class="asig-valor green-valor" id="greenCana">—</span>
+          </div>
+          <div class="asig-sep">·</div>
+          <div class="asig-item">
+            <span class="asig-label">Tipo de caña</span>
+            <span class="asig-valor green-valor" id="greenTipo">—</span>
+          </div>
+        </div>
+        <div class="check-circle">✓</div>
+        <button class="btn-volver green-volver" onclick="resetChicos()">← Buscar otro</button>
+      </div>
 
-      <button class="btn-volver green-volver" onclick="reiniciar()">← Buscar otro</button>
     </section>
 
     <!-- Loading -->
     <div class="loading-overlay hidden" id="loadingOverlay">
       <div class="spinner"></div>
-      <p class="loading-text" id="loadingText">Buscando...</p>
+      <p class="loading-text" id="loadingText">Cargando...</p>
     </div>
 
   </main>
 
-  <footer class="footer">Sistema de Asignación de Cañas &mdash; 2025</footer>
+  <footer class="footer">Sistema de Selección &mdash; 2025</footer>
 
   <script src="script.js"></script>
 </body>
