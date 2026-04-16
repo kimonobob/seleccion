@@ -24,8 +24,14 @@
         <p class="subtitle">Elige una sección para continuar</p>
       </header>
 
-      <div class="home-grid">
+      <!-- Estado de carga de datos -->
+      <div class="carga-estado" id="cargaEstado">
+        <div class="carga-spinner"></div>
+        <span id="cargaTexto">Cargando datos...</span>
+      </div>
 
+      <!-- Botones principales -->
+      <div class="home-grid" id="homeGrid">
         <button class="home-card home-chicas" onclick="irA('chicas')">
           <div class="home-card-glow glow-pink"></div>
           <span class="home-card-icon">♀</span>
@@ -33,7 +39,6 @@
           <span class="home-card-desc">Selección de bailarinas</span>
           <span class="home-card-arrow">→</span>
         </button>
-
         <button class="home-card home-chicos" onclick="irA('chicos')">
           <div class="home-card-glow glow-blue"></div>
           <span class="home-card-icon">♂</span>
@@ -41,8 +46,62 @@
           <span class="home-card-desc">Asignación de cañas</span>
           <span class="home-card-arrow">→</span>
         </button>
-
       </div>
+
+      <!-- ── RESUMEN MÚSICOS ── -->
+      <div class="resumen-section hidden" id="resumenMusicos">
+        <div class="resumen-header">
+          <span class="resumen-icon blue-icon">♂</span>
+          <h3 class="resumen-titulo">Músicos registrados</h3>
+          <span class="resumen-conteo" id="conteoMusicos">—</span>
+        </div>
+
+        <div class="resumen-stats" id="statsMusicos">
+          <!-- generado por JS -->
+        </div>
+
+        <div class="resumen-lista-wrap">
+          <table class="resumen-tabla" id="tablaMusicos">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Caña</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyMusicos">
+              <!-- generado por JS -->
+            </tbody>
+          </table>
+          <p class="lista-vacia hidden" id="vacioMusicos">Ningún músico registrado aún.</p>
+        </div>
+      </div>
+
+      <!-- ── RESUMEN CHICAS ── -->
+      <div class="resumen-section hidden" id="resumenChicas">
+        <div class="resumen-header">
+          <span class="resumen-icon pink-icon">♀</span>
+          <h3 class="resumen-titulo">Bailarinas seleccionadas</h3>
+          <span class="resumen-conteo pink-conteo" id="conteoChicas">—</span>
+        </div>
+
+        <div class="resumen-lista-wrap">
+          <table class="resumen-tabla" id="tablaChicas">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Ciclo</th>
+                <th>DNI</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyChicas">
+              <!-- generado por JS -->
+            </tbody>
+          </table>
+          <p class="lista-vacia hidden" id="vacioChicas">Ninguna bailarina seleccionada aún.</p>
+        </div>
+      </div>
+
     </section>
 
     <!-- ══════════════════════════════════
@@ -55,9 +114,8 @@
         <div class="seccion-badge pink-badge">♀ Chicas</div>
       </div>
 
-      <!-- Búsqueda -->
       <div class="card card-search">
-        <div class="step-label pink-label">Búsqueda</div>
+        <div class="step-label pink-label">Búsqueda instantánea</div>
         <h2 class="card-title">Buscar Estudiante</h2>
         <p class="card-desc">Ingresa el código de 6 dígitos</p>
         <div class="input-group">
@@ -77,7 +135,6 @@
         <p class="error-msg" id="errorChica"></p>
       </div>
 
-      <!-- Celeste: sin seleccionar -->
       <div class="card card-cyan hidden" id="chicaSinSeleccion">
         <div class="estado-pill cyan-pill">
           <span class="pill-dot cyan-dot"></span>Sin seleccionar
@@ -90,14 +147,11 @@
           </div>
         </div>
         <div class="divider cyan-divider"></div>
-        <button class="btn-seleccionar" onclick="seleccionarChica()">
-          Seleccionar ✓
-        </button>
+        <button class="btn-seleccionar" onclick="seleccionarChica()">Seleccionar ✓</button>
         <p class="error-msg" id="errorSeleccion"></p>
         <button class="btn-volver" onclick="resetChicas()">← Buscar otra</button>
       </div>
 
-      <!-- Verde: ya seleccionada -->
       <div class="card card-green hidden" id="chicaSeleccionada">
         <div class="estado-pill green-pill">
           <span class="pill-dot green-dot"></span>Ya seleccionada
@@ -129,9 +183,8 @@
         <div class="seccion-badge blue-badge">♂ Chicos</div>
       </div>
 
-      <!-- Búsqueda -->
       <div class="card card-search">
-        <div class="step-label">Búsqueda</div>
+        <div class="step-label">Búsqueda instantánea</div>
         <h2 class="card-title">Buscar Músico</h2>
         <p class="card-desc">Ingresa el código de 6 dígitos</p>
         <div class="input-group">
@@ -151,7 +204,6 @@
         <p class="error-msg" id="errorBusqueda"></p>
       </div>
 
-      <!-- Celeste: sin registrar -->
       <div class="card card-cyan hidden" id="seccionSinRegistro">
         <div class="estado-pill cyan-pill">
           <span class="pill-dot cyan-dot"></span>Sin asignación
@@ -169,17 +221,11 @@
         <div class="opciones-row">
           <label class="op-card cyan-op">
             <input type="radio" name="cana" value="1" onchange="actualizarSeleccion()"/>
-            <div class="op-inner">
-              <span class="op-num cyan-num">6</span>
-              <span class="op-txt">Seis</span>
-            </div>
+            <div class="op-inner"><span class="op-num cyan-num">6</span><span class="op-txt">Seis</span></div>
           </label>
           <label class="op-card cyan-op">
             <input type="radio" name="cana" value="2" onchange="actualizarSeleccion()"/>
-            <div class="op-inner">
-              <span class="op-num cyan-num">7</span>
-              <span class="op-txt">Siete</span>
-            </div>
+            <div class="op-inner"><span class="op-num cyan-num">7</span><span class="op-txt">Siete</span></div>
           </label>
         </div>
 
@@ -187,35 +233,23 @@
         <div class="opciones-row">
           <label class="op-card cyan-op">
             <input type="radio" name="tipoCana" value="Sanja" onchange="actualizarSeleccion()"/>
-            <div class="op-inner">
-              <span class="op-tipo-icon cyan-icon">◈</span>
-              <span class="op-txt">Sanja</span>
-            </div>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Sanja</span></div>
           </label>
           <label class="op-card cyan-op">
             <input type="radio" name="tipoCana" value="Malta" onchange="actualizarSeleccion()"/>
-            <div class="op-inner">
-              <span class="op-tipo-icon cyan-icon">◈</span>
-              <span class="op-txt">Malta</span>
-            </div>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Malta</span></div>
           </label>
           <label class="op-card cyan-op">
             <input type="radio" name="tipoCana" value="Contra" onchange="actualizarSeleccion()"/>
-            <div class="op-inner">
-              <span class="op-tipo-icon cyan-icon">◈</span>
-              <span class="op-txt">Contra</span>
-            </div>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Contra</span></div>
           </label>
         </div>
 
-        <button class="btn-guardar hidden" id="btnGuardar" onclick="guardarDatos()">
-          Guardar Registro ✓
-        </button>
+        <button class="btn-guardar hidden" id="btnGuardar" onclick="guardarDatos()">Guardar Registro ✓</button>
         <p class="error-msg" id="errorGuardar"></p>
         <button class="btn-volver" onclick="resetChicos()">← Buscar otro</button>
       </div>
 
-      <!-- Verde: ya registrado -->
       <div class="card card-green hidden" id="seccionRegistrado">
         <div class="estado-pill green-pill">
           <span class="pill-dot green-dot"></span>Ya registrado
@@ -245,7 +279,7 @@
 
     </section>
 
-    <!-- Loading -->
+    <!-- Loading inicial (carga de datos) -->
     <div class="loading-overlay hidden" id="loadingOverlay">
       <div class="spinner"></div>
       <p class="loading-text" id="loadingText">Cargando...</p>
@@ -254,7 +288,6 @@
   </main>
 
   <footer class="footer">Sistema de Selección &mdash; 2025</footer>
-
   <script src="script.js"></script>
 </body>
 </html>
