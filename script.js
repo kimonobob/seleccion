@@ -236,33 +236,33 @@ async function seleccionarChica() {
   clearErr("errorSeleccion");
   if (!chicaActual) return;
 
-  mostrarLoading("Guardando selección...");
+  // ── UI OPTIMISTA: pantalla verde al instante ──
+  const cod = chicaActual.codigo;
+  CACHE[cod].bailarina = "1";
 
+  $("chicaGreenNombre").textContent = chicaActual.nombre || "—";
+  $("chicaGreenDNI").textContent    = chicaActual.dni    || "—";
+  $("chicaGreenCiclo").textContent  = chicaActual.ciclo  || "—";
+  ocultar("chicaSinSeleccion");
+  mostrar("chicaSeleccionada");
+  $("chicaSeleccionada").scrollIntoView({ behavior: "smooth", block: "start" });
+  renderResumenes();
+
+  // ── Persistir en Sheets en segundo plano ──
   try {
-    const params = new URLSearchParams({ action: "seleccionarBailarina", codigo: chicaActual.codigo });
+    const params = new URLSearchParams({ action: "seleccionarBailarina", codigo: cod });
     const resp   = await fetch(`${SCRIPT_URL}?${params}`, { redirect: "follow" });
     const data   = await resp.json();
-
-    if (data.error) { setError("errorSeleccion", "⚠ " + data.error); return; }
-
-    // Actualizar caché local
-    CACHE[chicaActual.codigo].bailarina = "1";
-
-    $("chicaGreenNombre").textContent = chicaActual.nombre || "—";
-    $("chicaGreenDNI").textContent    = chicaActual.dni    || "—";
-    $("chicaGreenCiclo").textContent  = chicaActual.ciclo  || "—";
-    ocultar("chicaSinSeleccion");
-    mostrar("chicaSeleccionada");
-    $("chicaSeleccionada").scrollIntoView({ behavior: "smooth", block: "start" });
-
-    // Refrescar resumen del home en segundo plano
-    renderResumenes();
-
+    if (data.error) {
+      CACHE[cod].bailarina = "";   // revertir caché
+      renderResumenes();
+      setError("errorSeleccion", "⚠ No se guardó en servidor: " + data.error);
+    }
   } catch (err) {
     console.error(err);
-    setError("errorSeleccion", "⚠ Error al guardar. Intenta nuevamente.");
-  } finally {
-    ocultarLoading();
+    CACHE[cod].bailarina = "";
+    renderResumenes();
+    setError("errorSeleccion", "⚠ Error de red. El cambio no se guardó.");
   }
 }
 
@@ -336,49 +336,55 @@ function actualizarSeleccion() {
 async function guardarDatos() {
   clearErr("errorGuardar");
 
-  const canaInput    = document.querySelector('input[name="cana"]:checked');
+  const canaInput     = document.querySelector('input[name="cana"]:checked');
   const tipoCanaInput = document.querySelector('input[name="tipoCana"]:checked');
   if (!canaInput || !tipoCanaInput || !musicoActual) {
     setError("errorGuardar", "⚠ Selecciona caña y tipo de caña.");
     return;
   }
 
-  mostrarLoading("Guardando registro...");
+  // ── UI OPTIMISTA: pantalla verde al instante ──
+  const cod      = musicoActual.codigo;
+  const numCana  = canaInput.value;
+  const tipoCana = tipoCanaInput.value;
 
+  CACHE[cod].numCana  = numCana;
+  CACHE[cod].tipoCana = tipoCana;
+
+  $("greenNombre").textContent = musicoActual.nombre || "—";
+  $("greenDNI").textContent    = musicoActual.dni    || "—";
+  $("greenCiclo").textContent  = musicoActual.ciclo  || "—";
+  $("greenCana").textContent   = numCana === "1" ? "Seis" : "Siete";
+  $("greenTipo").textContent   = tipoCana;
+
+  ocultar("seccionSinRegistro");
+  mostrar("seccionRegistrado");
+  $("seccionRegistrado").scrollIntoView({ behavior: "smooth", block: "start" });
+  renderResumenes();
+
+  // ── Persistir en Sheets en segundo plano ──
   try {
     const params = new URLSearchParams({
       action:   "guardar",
-      codigo:   musicoActual.codigo,
-      numCana:  canaInput.value,
-      tipoCana: tipoCanaInput.value
+      codigo:   cod,
+      numCana:  numCana,
+      tipoCana: tipoCana
     });
     const resp = await fetch(`${SCRIPT_URL}?${params}`, { redirect: "follow" });
     const data = await resp.json();
-
-    if (data.error) { setError("errorGuardar", "⚠ " + data.error); return; }
-
-    // Actualizar caché local
-    CACHE[musicoActual.codigo].numCana  = canaInput.value;
-    CACHE[musicoActual.codigo].tipoCana = tipoCanaInput.value;
-
-    $("greenNombre").textContent = musicoActual.nombre || "—";
-    $("greenDNI").textContent    = musicoActual.dni    || "—";
-    $("greenCiclo").textContent  = musicoActual.ciclo  || "—";
-    $("greenCana").textContent   = canaInput.value === "1" ? "Seis" : "Siete";
-    $("greenTipo").textContent   = tipoCanaInput.value;
-
-    ocultar("seccionSinRegistro");
-    mostrar("seccionRegistrado");
-    $("seccionRegistrado").scrollIntoView({ behavior: "smooth", block: "start" });
-
-    // Refrescar resumen del home en segundo plano
-    renderResumenes();
-
+    if (data.error) {
+      // Revertir caché si falló
+      CACHE[cod].numCana  = "";
+      CACHE[cod].tipoCana = "";
+      renderResumenes();
+      setError("errorGuardar", "⚠ No se guardó en servidor: " + data.error);
+    }
   } catch (err) {
     console.error(err);
-    setError("errorGuardar", "⚠ Error al guardar. Intenta nuevamente.");
-  } finally {
-    ocultarLoading();
+    CACHE[cod].numCana  = "";
+    CACHE[cod].tipoCana = "";
+    renderResumenes();
+    setError("errorGuardar", "⚠ Error de red. El cambio no se guardó.");
   }
 }
 
