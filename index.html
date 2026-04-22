@@ -9,28 +9,27 @@
 </head>
 <body>
 
-  <div class="bg-texture"></div>
+  <div class="bg-texture no-print"></div>
 
-  <main class="container">
+  <main class="container" id="mainContainer">
 
     <!-- ══════════════════════════════════
          PANTALLA INICIO
     ══════════════════════════════════ -->
     <section id="pantallaInicio">
 
-      <header class="header">
+      <header class="header no-print">
         <div class="header-icon">♩</div>
         <h1 class="title">Sistema de<br/><span>Selección</span></h1>
         <p class="subtitle">Elige una sección para continuar</p>
       </header>
 
-      <!-- Estado de carga de datos -->
       <div class="carga-estado" id="cargaEstado">
         <div class="carga-spinner"></div>
         <span id="cargaTexto">Cargando datos...</span>
       </div>
 
-      <!-- Botones principales -->
+      <!-- Fila 1: Chicas / Chicos -->
       <div class="home-grid" id="homeGrid">
         <button class="home-card home-chicas" onclick="irA('chicas')">
           <div class="home-card-glow glow-pink"></div>
@@ -48,55 +47,52 @@
         </button>
       </div>
 
-      <!-- ── RESUMEN MÚSICOS ── -->
+      <!-- Fila 2: Puestos -->
+      <div class="home-grid home-grid-puestos" id="homeGridPuestos">
+        <button class="home-card home-puestos-chicas" onclick="irA('puestosChicas')">
+          <div class="home-card-glow glow-pink"></div>
+          <span class="home-card-icon puestos-icon">⊞</span>
+          <span class="home-card-title">Puestos ♀</span>
+          <span class="home-card-desc">Asignación de posiciones — chicas</span>
+          <span class="home-card-arrow">→</span>
+        </button>
+        <button class="home-card home-puestos-chicos" onclick="irA('puestosChicos')">
+          <div class="home-card-glow glow-blue"></div>
+          <span class="home-card-icon puestos-icon">⊞</span>
+          <span class="home-card-title">Puestos ♂</span>
+          <span class="home-card-desc">Asignación de posiciones — chicos</span>
+          <span class="home-card-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- Resumen músicos -->
       <div class="resumen-section hidden" id="resumenMusicos">
         <div class="resumen-header">
           <span class="resumen-icon blue-icon">♂</span>
           <h3 class="resumen-titulo">Músicos registrados</h3>
           <span class="resumen-conteo" id="conteoMusicos">—</span>
         </div>
-
-        <div class="resumen-stats" id="statsMusicos">
-          <!-- generado por JS -->
-        </div>
-
+        <div class="resumen-stats" id="statsMusicos"></div>
         <div class="resumen-lista-wrap">
-          <table class="resumen-tabla" id="tablaMusicos">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Caña</th>
-                <th>Tipo</th>
-              </tr>
-            </thead>
-            <tbody id="tbodyMusicos">
-              <!-- generado por JS -->
-            </tbody>
+          <table class="resumen-tabla">
+            <thead><tr><th>Nombre</th><th>Caña</th><th>Tipo</th></tr></thead>
+            <tbody id="tbodyMusicos"></tbody>
           </table>
           <p class="lista-vacia hidden" id="vacioMusicos">Ningún músico registrado aún.</p>
         </div>
       </div>
 
-      <!-- ── RESUMEN CHICAS ── -->
+      <!-- Resumen chicas -->
       <div class="resumen-section hidden" id="resumenChicas">
         <div class="resumen-header">
           <span class="resumen-icon pink-icon">♀</span>
           <h3 class="resumen-titulo">Bailarinas seleccionadas</h3>
           <span class="resumen-conteo pink-conteo" id="conteoChicas">—</span>
         </div>
-
         <div class="resumen-lista-wrap">
-          <table class="resumen-tabla" id="tablaChicas">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Ciclo</th>
-                <th>DNI</th>
-              </tr>
-            </thead>
-            <tbody id="tbodyChicas">
-              <!-- generado por JS -->
-            </tbody>
+          <table class="resumen-tabla">
+            <thead><tr><th>Nombre</th><th>Ciclo</th><th>DNI</th></tr></thead>
+            <tbody id="tbodyChicas"></tbody>
           </table>
           <p class="lista-vacia hidden" id="vacioChicas">Ninguna bailarina seleccionada aún.</p>
         </div>
@@ -107,38 +103,23 @@
     <!-- ══════════════════════════════════
          SECCIÓN CHICAS
     ══════════════════════════════════ -->
-    <section id="pantallaChicas" class="hidden">
-
+    <section id="pantallaChicas" class="hidden no-print">
       <div class="seccion-header">
         <button class="btn-back pink-back" onclick="volverInicio()">← Inicio</button>
         <div class="seccion-badge pink-badge">♀ Chicas</div>
       </div>
-
       <div class="card card-search">
         <div class="step-label pink-label">Búsqueda instantánea</div>
         <h2 class="card-title">Buscar Estudiante</h2>
         <p class="card-desc">Ingresa el código de 6 dígitos</p>
         <div class="input-group">
-          <input
-            type="text"
-            id="inputCodigoChica"
-            class="input-codigo"
-            placeholder="000000"
-            maxlength="6"
-            inputmode="numeric"
-            autocomplete="off"
-          />
-          <button class="btn-buscar pink-buscar" onclick="buscarChica()">
-            Buscar <span>→</span>
-          </button>
+          <input type="text" id="inputCodigoChica" class="input-codigo" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off"/>
+          <button class="btn-buscar pink-buscar" onclick="buscarChica()">Buscar <span>→</span></button>
         </div>
         <p class="error-msg" id="errorChica"></p>
       </div>
-
       <div class="card card-cyan hidden" id="chicaSinSeleccion">
-        <div class="estado-pill cyan-pill">
-          <span class="pill-dot cyan-dot"></span>Sin seleccionar
-        </div>
+        <div class="estado-pill cyan-pill"><span class="pill-dot cyan-dot"></span>Sin seleccionar</div>
         <div class="musico-block">
           <div class="musico-name cyan-name" id="chicaCyanNombre">—</div>
           <div class="musico-meta">
@@ -151,11 +132,8 @@
         <p class="error-msg" id="errorSeleccion"></p>
         <button class="btn-volver" onclick="resetChicas()">← Buscar otra</button>
       </div>
-
       <div class="card card-green hidden" id="chicaSeleccionada">
-        <div class="estado-pill green-pill">
-          <span class="pill-dot green-dot"></span>Ya seleccionada
-        </div>
+        <div class="estado-pill green-pill"><span class="pill-dot green-dot"></span>Ya seleccionada</div>
         <div class="musico-block">
           <div class="musico-name green-name" id="chicaGreenNombre">—</div>
           <div class="musico-meta">
@@ -170,44 +148,28 @@
         </div>
         <button class="btn-volver green-volver" onclick="resetChicas()">← Buscar otra</button>
       </div>
-
     </section>
 
     <!-- ══════════════════════════════════
          SECCIÓN CHICOS
     ══════════════════════════════════ -->
-    <section id="pantallaChicos" class="hidden">
-
+    <section id="pantallaChicos" class="hidden no-print">
       <div class="seccion-header">
         <button class="btn-back blue-back" onclick="volverInicio()">← Inicio</button>
         <div class="seccion-badge blue-badge">♂ Chicos</div>
       </div>
-
       <div class="card card-search">
         <div class="step-label">Búsqueda instantánea</div>
         <h2 class="card-title">Buscar Músico</h2>
         <p class="card-desc">Ingresa el código de 6 dígitos</p>
         <div class="input-group">
-          <input
-            type="text"
-            id="inputCodigo"
-            class="input-codigo"
-            placeholder="000000"
-            maxlength="6"
-            inputmode="numeric"
-            autocomplete="off"
-          />
-          <button class="btn-buscar" onclick="buscarMusico()">
-            Buscar <span>→</span>
-          </button>
+          <input type="text" id="inputCodigo" class="input-codigo" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off"/>
+          <button class="btn-buscar" onclick="buscarMusico()">Buscar <span>→</span></button>
         </div>
         <p class="error-msg" id="errorBusqueda"></p>
       </div>
-
       <div class="card card-cyan hidden" id="seccionSinRegistro">
-        <div class="estado-pill cyan-pill">
-          <span class="pill-dot cyan-dot"></span>Sin asignación
-        </div>
+        <div class="estado-pill cyan-pill"><span class="pill-dot cyan-dot"></span>Sin asignación</div>
         <div class="musico-block">
           <div class="musico-name cyan-name" id="cyanNombre">—</div>
           <div class="musico-meta">
@@ -216,44 +178,28 @@
           </div>
         </div>
         <div class="divider cyan-divider"></div>
-
         <p class="sel-label cyan-sel">¿Qué caña tocará?</p>
         <div class="opciones-row">
-          <label class="op-card cyan-op">
-            <input type="radio" name="cana" value="1" onchange="actualizarSeleccion()"/>
-            <div class="op-inner"><span class="op-num cyan-num">6</span><span class="op-txt">Seis</span></div>
-          </label>
-          <label class="op-card cyan-op">
-            <input type="radio" name="cana" value="2" onchange="actualizarSeleccion()"/>
-            <div class="op-inner"><span class="op-num cyan-num">7</span><span class="op-txt">Siete</span></div>
-          </label>
+          <label class="op-card cyan-op"><input type="radio" name="cana" value="1" onchange="actualizarSeleccion()"/>
+            <div class="op-inner"><span class="op-num cyan-num">6</span><span class="op-txt">Seis</span></div></label>
+          <label class="op-card cyan-op"><input type="radio" name="cana" value="2" onchange="actualizarSeleccion()"/>
+            <div class="op-inner"><span class="op-num cyan-num">7</span><span class="op-txt">Siete</span></div></label>
         </div>
-
         <p class="sel-label cyan-sel">Tipo de caña</p>
         <div class="opciones-row">
-          <label class="op-card cyan-op">
-            <input type="radio" name="tipoCana" value="Sanja" onchange="actualizarSeleccion()"/>
-            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Sanja</span></div>
-          </label>
-          <label class="op-card cyan-op">
-            <input type="radio" name="tipoCana" value="Malta" onchange="actualizarSeleccion()"/>
-            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Malta</span></div>
-          </label>
-          <label class="op-card cyan-op">
-            <input type="radio" name="tipoCana" value="Contra" onchange="actualizarSeleccion()"/>
-            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Contra</span></div>
-          </label>
+          <label class="op-card cyan-op"><input type="radio" name="tipoCana" value="Sanja" onchange="actualizarSeleccion()"/>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Sanja</span></div></label>
+          <label class="op-card cyan-op"><input type="radio" name="tipoCana" value="Malta" onchange="actualizarSeleccion()"/>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Malta</span></div></label>
+          <label class="op-card cyan-op"><input type="radio" name="tipoCana" value="Contra" onchange="actualizarSeleccion()"/>
+            <div class="op-inner"><span class="op-tipo-icon cyan-icon">◈</span><span class="op-txt">Contra</span></div></label>
         </div>
-
         <button class="btn-guardar hidden" id="btnGuardar" onclick="guardarDatos()">Guardar Registro ✓</button>
         <p class="error-msg" id="errorGuardar"></p>
         <button class="btn-volver" onclick="resetChicos()">← Buscar otro</button>
       </div>
-
       <div class="card card-green hidden" id="seccionRegistrado">
-        <div class="estado-pill green-pill">
-          <span class="pill-dot green-dot"></span>Ya registrado
-        </div>
+        <div class="estado-pill green-pill"><span class="pill-dot green-dot"></span>Ya registrado</div>
         <div class="musico-block">
           <div class="musico-name green-name" id="greenNombre">—</div>
           <div class="musico-meta">
@@ -263,31 +209,124 @@
         </div>
         <div class="divider green-divider"></div>
         <div class="asignacion-display">
-          <div class="asig-item">
-            <span class="asig-label">Caña asignada</span>
-            <span class="asig-valor green-valor" id="greenCana">—</span>
-          </div>
+          <div class="asig-item"><span class="asig-label">Caña asignada</span><span class="asig-valor green-valor" id="greenCana">—</span></div>
           <div class="asig-sep">·</div>
-          <div class="asig-item">
-            <span class="asig-label">Tipo de caña</span>
-            <span class="asig-valor green-valor" id="greenTipo">—</span>
-          </div>
+          <div class="asig-item"><span class="asig-label">Tipo de caña</span><span class="asig-valor green-valor" id="greenTipo">—</span></div>
         </div>
         <div class="check-circle">✓</div>
         <button class="btn-volver green-volver" onclick="resetChicos()">← Buscar otro</button>
       </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         PUESTOS CHICAS
+    ══════════════════════════════════ -->
+    <section id="pantallaPuestosChicas" class="hidden puestos-seccion">
+
+      <div class="seccion-header no-print">
+        <button class="btn-back pink-back" onclick="volverInicio()">← Inicio</button>
+        <div class="seccion-badge pink-badge">⊞ Puestos Chicas</div>
+        <button class="btn-print-action" onclick="window.print()">🖨 Imprimir</button>
+      </div>
+
+      <!-- Título solo para imprimir -->
+      <div class="print-title">
+        <h2>Asignación de Puestos — Chicas</h2>
+      </div>
+
+      <div class="puestos-estado no-print" id="puestosChicasEstado">
+        <span id="puestosChicasTexto">Cargando puestos...</span>
+      </div>
+
+      <!-- Bloque A: 4 filas × 15 columnas -->
+      <div class="bloque-wrap" id="bloqueAWrap">
+        <div class="bloque-header">
+          <span class="bloque-label pink-bloque">Bloque A</span>
+          <span class="bloque-dim">4 filas × 15 columnas</span>
+          <span class="bloque-count" id="bloqueACount">0 / 60</span>
+        </div>
+        <div class="grid-scroll">
+          <div class="puestos-grid" id="gridBloqueA" style="--cols:15"></div>
+        </div>
+      </div>
+
+      <!-- Bloque B: 4 filas × 10 columnas -->
+      <div class="bloque-wrap" id="bloqueBWrap">
+        <div class="bloque-header">
+          <span class="bloque-label pink-bloque">Bloque B</span>
+          <span class="bloque-dim">4 filas × 10 columnas</span>
+          <span class="bloque-count" id="bloqueBCount">0 / 40</span>
+        </div>
+        <div class="grid-scroll">
+          <div class="puestos-grid" id="gridBloqueB" style="--cols:10"></div>
+        </div>
+      </div>
 
     </section>
 
-    <!-- Loading inicial (carga de datos) -->
-    <div class="loading-overlay hidden" id="loadingOverlay">
+    <!-- ══════════════════════════════════
+         PUESTOS CHICOS (próximamente)
+    ══════════════════════════════════ -->
+    <section id="pantallaPuestosChicos" class="hidden no-print">
+      <div class="seccion-header">
+        <button class="btn-back blue-back" onclick="volverInicio()">← Inicio</button>
+        <div class="seccion-badge blue-badge">⊞ Puestos Chicos</div>
+      </div>
+      <div class="card" style="text-align:center;padding:48px 24px">
+        <div style="font-size:2.5rem;margin-bottom:16px;opacity:.4">🎵</div>
+        <p style="color:var(--muted);font-size:.9rem;font-family:'DM Mono',monospace;letter-spacing:.1em">Próximamente disponible</p>
+      </div>
+    </section>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay hidden no-print" id="loadingOverlay">
       <div class="spinner"></div>
       <p class="loading-text" id="loadingText">Cargando...</p>
     </div>
 
   </main>
 
-  <footer class="footer">Sistema de Selección &mdash; 2025</footer>
+  <!-- ══════════════════════════════════
+       MODAL ASIGNACIÓN DE PUESTO
+  ══════════════════════════════════ -->
+  <div class="modal-overlay hidden no-print" id="modalPuesto">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-num" id="modalPuestoLabel">Puesto #—</span>
+        <button class="modal-close" onclick="cerrarModal()">✕</button>
+      </div>
+
+      <!-- Vista: Asignar -->
+      <div id="modalVista">
+        <p class="modal-desc">Ingresa el código del estudiante</p>
+        <input type="text" id="modalCodigo" class="input-codigo modal-input"
+               placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="off"/>
+        <div class="modal-preview hidden" id="modalPreview">
+          <div class="modal-preview-name" id="modalPreviewNombre">—</div>
+          <div class="modal-preview-meta" id="modalPreviewMeta">—</div>
+        </div>
+        <p class="error-msg" id="errorModal"></p>
+        <div class="modal-actions">
+          <button class="modal-btn-cancel" onclick="cerrarModal()">Cancelar</button>
+          <button class="modal-btn-asignar hidden" id="btnAsignarPuesto" onclick="confirmarAsignacion()">Asignar ✓</button>
+        </div>
+      </div>
+
+      <!-- Vista: Puesto ocupado -->
+      <div id="modalVistaOcupado" class="hidden">
+        <div class="modal-ocupado-name" id="modalOcupadoNombre">—</div>
+        <div class="modal-ocupado-meta" id="modalOcupadoMeta">—</div>
+        <p class="modal-desc" style="margin-top:16px">¿Qué deseas hacer?</p>
+        <div class="modal-actions">
+          <button class="modal-btn-cancel" onclick="cerrarModal()">Cerrar</button>
+          <button class="modal-btn-liberar" onclick="liberarPuesto()">Liberar puesto</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer no-print">Sistema de Selección &mdash; 2025</footer>
   <script src="script.js"></script>
 </body>
 </html>
